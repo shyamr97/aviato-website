@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Run Together · Bengaluru Run Club</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Archivo+Black&family=DM+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Mono&family=Inter:wght@400;500;600&family=Work+Sans:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #0e1a14;
+  --bg-2: #142119;
+  --cream: #f4ede0;
+  --cream-dim: #d9d2c3;
+  --accent: #7dff5a;
+  --accent-2: #e8723c;
+  --line: rgba(244, 237, 224, 0.14);
+  --line-strong: rgba(244, 237, 224, 0.28);
+  --display: "Anton", "Oswald", "Impact", sans-serif;
+  --mono: "DM Mono", "JetBrains Mono", ui-monospace, monospace;
+  --body: "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at top, rgba(232, 114, 60, 0.05), transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(125, 255, 90, 0.03), transparent 60%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.92 0 0 0 0 0.85 0 0 0 0.6 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 32px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+.display { font-family: var(--display); text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.88; font-weight: 400; }
+.mono { font-family: var(--mono); }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 32px;
+  background: linear-gradient(to bottom, rgba(14, 26, 20, 0.92), rgba(14, 26, 20, 0));
+  backdrop-filter: blur(8px);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; }
+.brand-mark { width: 28px; height: 28px; border: 2px solid var(--cream); border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--cream); }
+.nav-links { display: flex; gap: 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; }
+.nav-links a { position: relative; padding: 8px 0; color: var(--cream-dim); transition: color 0.2s; }
+.nav-links a:hover { color: var(--cream); }
+.nav-cta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 18px; background: var(--accent); color: #0e1a14; border-radius: 999px; font-weight: 600; transition: transform 0.15s; }
+.nav-cta:hover { transform: translateY(-1px); }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh; padding: 120px 32px 60px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  overflow: hidden; isolation: isolate;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: -2;
+  background:
+    radial-gradient(ellipse at 30% 40%, #c54a1f 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 60%, #6b2410 0%, transparent 60%),
+    linear-gradient(160deg, #2a1108 0%, #0e1a14 60%, #0a1410 100%);
+}
+.hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(180deg, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+}
+.hero-vignette {
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to bottom, rgba(14,26,20,0.4) 0%, transparent 30%, transparent 60%, rgba(14,26,20,0.85) 100%);
+}
+.hero-placeholder-tag {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+  color: rgba(244, 237, 224, 0.35); text-transform: uppercase; pointer-events: none;
+}
+.hero-meta-top {
+  position: absolute; top: 120px; left: 32px; right: 32px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim);
+}
+.hero-meta-top .col { display: flex; flex-direction: column; gap: 4px; }
+.hero-meta-top .col strong { color: var(--cream); font-weight: 600; }
+.hero-bib { font-family: var(--display); font-size: 52px; color: var(--cream); line-height: 1; letter-spacing: 0; }
+.hero-content { position: relative; z-index: 2; }
+.hero-pretitle { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream-dim); }
+.hero-pretitle .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+.hero-title { font-family: var(--display); font-size: clamp(80px, 16vw, 280px); line-height: 0.82; letter-spacing: -0.02em; text-transform: uppercase; color: var(--cream); }
+.hero-title .accent { -webkit-text-stroke: 2px var(--cream); color: transparent; }
+.hero-title .green { color: var(--accent); }
+.hero-bottom { margin-top: 48px; display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+.hero-tagline { max-width: 420px; font-size: 16px; line-height: 1.5; color: var(--cream-dim); }
+.hero-actions { display: flex; gap: 12px; align-items: center; }
+
+/* ===== BUTTONS ===== */
+.btn { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 28px; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s, background 0.15s; }
+.btn-primary { background: var(--accent); color: #0e1a14; }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--cream); border: 1px solid var(--line-strong); }
+.btn-ghost:hover { background: rgba(244, 237, 224, 0.05); }
+.arrow { display: inline-block; transition: transform 0.2s; }
+.btn:hover .arrow { transform: translateX(3px); }
+
+/* ===== TICKER ===== */
+.ticker { background: var(--accent); color: #0e1a14; padding: 18px 0; border-top: 1px solid #0e1a14; border-bottom: 1px solid #0e1a14; overflow: hidden; position: relative; z-index: 3; }
+.ticker-track { display: flex; gap: 48px; white-space: nowrap; animation: scroll 40s linear infinite; font-family: var(--display); font-size: 28px; letter-spacing: 0.02em; text-transform: uppercase; }
+.ticker-track span { display: inline-flex; align-items: center; gap: 48px; }
+.ticker-track .star { color: var(--accent-2); font-size: 24px; }
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ===== SECTION SHELL ===== */
+section { position: relative; z-index: 2; padding: 120px 0; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 56px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.section-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream-dim); }
+.section-title { font-family: var(--display); font-size: clamp(56px, 7vw, 120px); line-height: 0.88; text-transform: uppercase; letter-spacing: -0.01em; flex: 1; }
+.section-title .green { color: var(--accent); }
+.section-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); text-align: right; flex-shrink: 0; max-width: 240px; line-height: 1.6; }
+
+/* ===== STATS ===== */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stat { padding: 48px 32px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.stat:last-child { border-right: none; }
+.stat-num { font-family: var(--display); font-size: 96px; line-height: 0.9; color: var(--cream); letter-spacing: -0.02em; }
+.stat-num .unit { font-size: 28px; color: var(--accent); margin-left: 4px; }
+.stat-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-top: 8px; }
+
+/* ===== SCHEDULE ===== */
+.schedule { background: var(--bg-2); }
+.day-tabs { display: flex; gap: 0; margin-bottom: 0; border: 1px solid var(--line); border-radius: 999px; padding: 6px; width: fit-content; }
+.day-tab { padding: 12px 22px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); border-radius: 999px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.day-tab.active { background: var(--accent); color: #0e1a14; }
+.day-tab:hover:not(.active) { color: var(--cream); }
+.day-tab .num { font-family: var(--display); font-size: 14px; letter-spacing: 0; }
+.run-card { display: grid; grid-template-columns: 120px 2fr 1fr 1fr 1fr auto; gap: 32px; align-items: center; padding: 32px 24px; border-bottom: 1px solid var(--line); transition: background 0.2s; cursor: pointer; }
+.run-card:hover { background: rgba(125, 255, 90, 0.03); }
+.run-card:hover .run-arrow { transform: translateX(6px); color: var(--accent); }
+.run-time { font-family: var(--display); font-size: 38px; line-height: 1; color: var(--cream); }
+.run-time .ampm { font-size: 16px; color: var(--cream-dim); margin-left: 4px; }
+.run-info h4 { font-family: var(--display); font-size: 28px; text-transform: uppercase; letter-spacing: 0.005em; margin-bottom: 6px; }
+.run-info p { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-dim); }
+.run-spec { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+.run-spec strong { display: block; font-family: var(--display); font-size: 24px; color: var(--cream); letter-spacing: 0; margin-bottom: 2px; font-weight: 400; }
+.run-tag { display: inline-block; padding: 6px 12px; border-radius: 999px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+.run-tag.green { background: var(--accent); color: #0e1a14; }
+.run-tag.orange { background: var(--accent-2); color: #0e1a14; }
+.run-tag.outline { border: 1px solid var(--line-strong); color: var(--cream-dim); }
+.run-arrow { font-family: var(--mono); font-size: 24px; color: var(--cream-dim); transition: transform 0.2s, color 0.2s; }
+.rest-day { padding: 80px 24px; text-align: center; border-bottom: 1px solid var(--line); }
+.rest-day h3 { font-family: var(--display); font-size: 80px; line-height: 0.9; color: var(--accent-2); }
+.rest-day p { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-top: 12px; }
+
+/* ===== ROUTES ===== */
+.routes-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.route-card { position: relative; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.3s; isolation: isolate; }
+.route-card:hover { transform: translateY(-4px); }
+.route-map {
+  aspect-ratio: 16 / 10;
+  background: radial-gradient(ellipse at 70% 30%, #1a3a28 0%, transparent 50%), linear-gradient(135deg, #0a1f15 0%, #1a2e22 100%);
+  position: relative; overflow: hidden;
+}
+.route-card.featured .route-map { aspect-ratio: 16 / 11; }
+.route-map::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 39px, rgba(125,255,90,0.06) 39px, rgba(125,255,90,0.06) 40px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 39px, rgba(125,255,90,0.06) 39px, rgba(125,255,90,0.06) 40px);
+}
+.route-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.route-pin { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(125, 255, 90, 0.2); transform: translate(-50%, -50%); }
+.route-pin.end { background: var(--accent-2); box-shadow: 0 0 0 4px rgba(232, 114, 60, 0.2); }
+.route-info { padding: 24px; background: var(--bg-2); display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; border: 1px solid var(--line); border-top: none; }
+.route-info h4 { font-family: var(--display); font-size: 32px; text-transform: uppercase; margin-bottom: 4px; }
+.route-info p { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+.route-stats { display: flex; gap: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-dim); text-align: right; }
+.route-stats span strong { display: block; font-family: var(--display); font-size: 22px; color: var(--cream); letter-spacing: 0; margin-bottom: 2px; font-weight: 400; }
+.route-side { display: flex; flex-direction: column; gap: 24px; }
+.route-side .route-card .route-map { aspect-ratio: 16 / 8; }
+
+/* ===== RACES ===== */
+.races-list { display: flex; flex-direction: column; }
+.race-row { display: grid; grid-template-columns: 100px 1fr auto auto auto; gap: 32px; align-items: center; padding: 36px 0; border-bottom: 1px solid var(--line); transition: padding 0.25s; cursor: pointer; }
+.race-row:first-child { border-top: 1px solid var(--line); }
+.race-row:hover { padding-left: 16px; padding-right: 0; }
+.race-row:hover h4 { color: var(--accent); }
+.race-date { font-family: var(--display); text-align: left; }
+.race-date .day { font-size: 56px; line-height: 0.85; display: block; color: var(--accent-2); }
+.race-date .month { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+.race-info h4 { font-family: var(--display); font-size: 40px; text-transform: uppercase; letter-spacing: 0; margin-bottom: 6px; transition: color 0.2s; }
+.race-info p { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+.race-distance, .race-status { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
+.race-distance strong { display: block; font-family: var(--display); font-size: 28px; color: var(--cream); letter-spacing: 0; margin-bottom: 2px; font-weight: 400; }
+.race-status { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--cream-dim); }
+.race-status.open { background: var(--accent); color: #0e1a14; border-color: var(--accent); }
+.race-status.soon { background: transparent; }
+.race-status.full { color: rgba(244,237,224,0.4); }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials { background: var(--bg-2); }
+.tcards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.tcard { padding: 36px 32px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); display: flex; flex-direction: column; gap: 24px; position: relative; transition: border-color 0.2s, transform 0.2s; }
+.tcard:hover { border-color: var(--accent); transform: translateY(-4px); }
+.tcard .quote-mark { font-family: var(--display); font-size: 96px; color: var(--accent); line-height: 0.6; height: 32px; }
+.tcard blockquote { font-family: var(--display); font-size: 24px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0; flex: 1; }
+.tperson { display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+.tavatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #c54a1f, #6b2410); flex-shrink: 0; border: 2px solid var(--cream); display: grid; place-items: center; font-family: var(--display); font-size: 16px; color: var(--cream); }
+.tperson .name { font-family: var(--display); font-size: 18px; text-transform: uppercase; letter-spacing: 0; }
+.tperson .meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); margin-top: 2px; }
+
+/* ===== GALLERY ===== */
+.gallery { display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: 200px 200px; gap: 12px; }
+.gphoto { position: relative; border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform 0.3s; }
+.gphoto:hover { transform: scale(0.98); }
+.gphoto:hover .gphoto-label { opacity: 1; }
+.gphoto-label { position: absolute; bottom: 12px; left: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); background: rgba(14,26,20,0.7); padding: 4px 8px; border-radius: 999px; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(4px); }
+.gphoto:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.gphoto:nth-child(4) { grid-column: span 2; }
+
+/* ===== JOIN CTA ===== */
+.join { position: relative; padding: 140px 32px; text-align: center; overflow: hidden; isolation: isolate; }
+.join-bg { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 50%, #6b2410 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #c54a1f 0%, transparent 50%), linear-gradient(180deg, #0e1a14 0%, #2a1108 50%, #0e1a14 100%); }
+.join-eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; }
+.join-title { font-family: var(--display); font-size: clamp(80px, 14vw, 220px); line-height: 0.85; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 32px; }
+.join-title .stroke { -webkit-text-stroke: 2px var(--cream); color: transparent; }
+.join-sub { font-size: 18px; color: var(--cream-dim); max-width: 540px; margin: 0 auto 48px; line-height: 1.5; }
+.join-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* ===== FOOTER ===== */
+.foot { border-top: 1px solid var(--line); padding: 48px 32px 32px; }
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+.foot-brand { font-family: var(--display); font-size: 64px; line-height: 0.9; text-transform: uppercase; }
+.foot-brand .green { color: var(--accent); }
+.foot-col h5 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 18px; }
+.foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.foot-col a { font-family: var(--display); font-size: 18px; text-transform: uppercase; letter-spacing: 0; transition: color 0.2s; }
+.foot-col a:hover { color: var(--accent); }
+.foot-bottom { display: flex; justify-content: space-between; padding-top: 32px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 980px) {
+  .nav-links { display: none; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--line); }
+  .routes-grid { grid-template-columns: 1fr; }
+  .tcards { grid-template-columns: 1fr; }
+  .race-row { grid-template-columns: 70px 1fr auto; gap: 16px; }
+  .race-row .race-distance, .race-row .race-status { display: none; }
+  .run-card { grid-template-columns: 80px 1fr auto; }
+  .run-card .run-spec, .run-card .run-arrow { display: none; }
+  .gallery { grid-template-columns: repeat(3, 1fr); grid-template-rows: 140px 140px 140px; }
+  .gphoto:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .gphoto:nth-child(4) { grid-column: span 1; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .section-head { flex-direction: column; align-items: flex-start; }
+  .section-meta { text-align: left; }
+  .day-tabs { flex-wrap: wrap; border-radius: 16px; }
+}
+
+@media (max-width: 600px) {
+  .wrap { padding: 0 20px; }
+  .hero { padding: 100px 20px 40px; }
+  .hero-meta-top { display: none; }
+  .hero-title { font-size: clamp(64px, 18vw, 120px); }
+  .run-card { grid-template-columns: 70px 1fr; gap: 16px; padding: 24px 16px; }
+  .race-row { grid-template-columns: 60px 1fr; gap: 12px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 140px); }
+  .gphoto:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .join { padding: 80px 20px; }
+  .day-tabs { width: 100%; justify-content: center; }
+  .day-tab { padding: 10px 14px; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+// ===== DATA =====
+const SCHEDULE = {
+  MON: [
+    { time: "5:30", ampm: "AM", title: "Recovery Shakeout", loc: "Cubbon Park · Queens Statue", pace: "7:30", dist: "5K", tag: { type: "outline", label: "All Paces" } },
+    { time: "6:30", ampm: "PM", title: "Easy Miles Club", loc: "Sankey Tank Loop", pace: "6:30", dist: "8K", tag: { type: "outline", label: "Social" } },
+  ],
+  TUE: [
+    { time: "5:30", ampm: "AM", title: "Threshold Tuesday", loc: "Kanteerava Stadium · Track", pace: "4:30", dist: "10K", tag: { type: "green", label: "Workout" } },
+    { time: "6:00", ampm: "AM", title: "Tempo Crew", loc: "Cubbon Park · Bandstand", pace: "5:15", dist: "8K", tag: { type: "orange", label: "Hard" } },
+  ],
+  WED: [
+    { time: "6:00", ampm: "AM", title: "Hump Day Hills", loc: "Lalbagh · West Gate", pace: "5:45", dist: "9K", tag: { type: "orange", label: "Hilly" } },
+    { time: "7:00", ampm: "PM", title: "After-Work Easy", loc: "Ulsoor Lake", pace: "6:45", dist: "7K", tag: { type: "outline", label: "Social" } },
+  ],
+  THU: [
+    { time: "5:30", ampm: "AM", title: "Track Repeats", loc: "Kanteerava Stadium · Track", pace: "4:00", dist: "12K", tag: { type: "green", label: "Workout" } },
+  ],
+  FRI: [
+    { time: "6:00", ampm: "AM", title: "Friday Flow", loc: "Cubbon Park · Queens Statue", pace: "6:30", dist: "6K", tag: { type: "outline", label: "Easy" } },
+    { time: "6:30", ampm: "PM", title: "Beer Mile (Maybe)", loc: "Indiranagar 100ft Rd", pace: "FUN", dist: "4×400m", tag: { type: "orange", label: "Social" } },
+  ],
+  SAT: [
+    { time: "5:00", ampm: "AM", title: "Long Run · Marathon Block", loc: "Hebbal Lake · Loop", pace: "5:30", dist: "24K", tag: { type: "green", label: "Long" } },
+    { time: "6:00", ampm: "AM", title: "Half Marathon Pack", loc: "Hebbal Lake · Loop", pace: "6:00", dist: "16K", tag: { type: "outline", label: "Long" } },
+  ],
+  SUN: "REST",
+};
+
+const ROUTES = [
+  {
+    name: "The Cubbon Loop",
+    type: "Featured · Tuesday Tempo",
+    dist: "8.4K", elev: "62m", surface: "Tarmac", featured: true,
+    path: "M40,260 C80,180 140,220 180,160 C220,100 280,140 340,90 C400,50 460,80 520,60 C580,40 640,80 680,140 C720,200 660,250 580,260 C500,270 440,220 380,250 C320,280 240,290 180,270 C120,260 60,290 40,260 Z",
+    pins: [{ x: 7, y: 90, end: false }, { x: 92, y: 32, end: true }],
+  },
+  {
+    name: "Hebbal Long",
+    type: "Saturday Long Run",
+    dist: "24K", elev: "180m", surface: "Mixed",
+    path: "M30,180 Q120,40 240,120 T440,80 Q540,60 600,180",
+    pins: [{ x: 5, y: 60, end: false }, { x: 95, y: 60, end: true }],
+  },
+  {
+    name: "Lalbagh Hills",
+    type: "Wednesday Workout",
+    dist: "9K", elev: "240m", surface: "Tarmac",
+    path: "M40,180 C100,100 180,160 240,80 C300,40 380,120 460,80 C520,60 580,140 600,180",
+    pins: [{ x: 7, y: 60, end: false }, { x: 95, y: 60, end: true }],
+  },
+];
+
+const RACES = [
+  { day: "17", month: "May", title: "TCS World 10K Bengaluru", loc: "Sree Kanteerava Stadium · 6:00 AM", dist: "10K", status: "open", statusLabel: "Crew Spots Open" },
+  { day: "08", month: "Jun", title: "Nandi Hills Hill Climb", loc: "Chikkaballapur · 5:30 AM · Bus from HSR", dist: "21K", status: "open", statusLabel: "Crew Spots Open" },
+  { day: "21", month: "Jul", title: "Monsoon Half Marathon", loc: "Hesaraghatta Lake · 5:00 AM", dist: "21.1K", status: "soon", statusLabel: "Reg. Opens 01 May" },
+  { day: "14", month: "Sep", title: "Bengaluru Marathon — Crew Block", loc: "Vidhana Soudha · 4:00 AM", dist: "42.2K", status: "soon", statusLabel: "Reg. Opens 15 Jun" },
+  { day: "02", month: "Nov", title: "Kaveri Trail Marathon", loc: "Srirangapatna · 5:30 AM", dist: "25K", status: "full", statusLabel: "Crew Full" },
+];
+
+const TESTIMONIALS = [
+  { quote: "Showed up alone on a Tuesday. Three years later this crew is my family. Knocked 22 minutes off my marathon.", name: "Aditi R.", init: "AR", meta: "Member since '23 · Sub-3:30 marathoner" },
+  { quote: "I used to hate Tuesdays. Now threshold day is the best part of my week. Pain is shared. Splits get faster.", name: "Karthik M.", init: "KM", meta: "Member since '22 · 5K PR 18:42" },
+  { quote: "Came for the runs, stayed for the post-run filter coffee at MTR. No gatekeeping, just kilometers.", name: "Priya S.", init: "PS", meta: "Member since '24 · First-time half marathoner" },
+];
+
+const GALLERY = [
+  { hue: "12, 70%, 35%", label: "Saturday long run · Hebbal" },
+  { hue: "30, 60%, 40%", label: "Track Tuesday · Kanteerava" },
+  { hue: "150, 40%, 25%", label: "Cubbon · Sunrise" },
+  { hue: "20, 65%, 45%", label: "Crew · Bengaluru Marathon '25" },
+  { hue: "8, 55%, 30%", label: "Nandi Hills · Hill repeats" },
+  { hue: "90, 35%, 28%", label: "Lalbagh · Easy Friday" },
+];
+
+const DAYS = [
+  { key: "MON", num: "01" }, { key: "TUE", num: "02" }, { key: "WED", num: "03" },
+  { key: "THU", num: "04" }, { key: "FRI", num: "05" }, { key: "SAT", num: "06" }, { key: "SUN", num: "07" },
+];
+</script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function Nav() {
+  return (
+    <nav className="nav">
+      <a className="brand" href="#top">
+        <span className="brand-mark">RT</span>
+        <span>Run Together</span>
+      </a>
+      <div className="nav-links">
+        <a href="#schedule">Schedule</a>
+        <a href="#routes">Routes</a>
+        <a href="#races">Races</a>
+        <a href="#crew">Crew</a>
+        <a href="#gallery">Gallery</a>
+      </div>
+      <a className="nav-cta" href="#join">Join the Crew →</a>
+    </nav>
+  );
+}
+
+function Hero() {
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const t = time.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false });
+  return (
+    <header className="hero" id="top">
+      <div className="hero-bg"></div>
+      <div className="hero-vignette"></div>
+      <div className="hero-placeholder-tag">[ ACTION SHOT · CREW AT KANTEERAVA TRACK · GOLDEN HOUR ]</div>
+      <div className="hero-meta-top">
+        <div className="col">
+          <span>EST. 2019</span>
+          <span>BENGALURU · 12.97°N</span>
+        </div>
+        <div className="hero-bib">№ 042</div>
+        <div className="col" style={{ textAlign: "right" }}>
+          <span>BLR · {t} IST</span>
+          <span><strong>1,247</strong> ACTIVE MEMBERS</span>
+        </div>
+      </div>
+      <div className="hero-content">
+        <div className="hero-pretitle">
+          <span className="dot"></span>
+          <span>Bengaluru Run Club · Since 2019</span>
+        </div>
+        <h1 className="hero-title">
+          Show up.<br/>
+          <span className="green">Run.</span> <span className="accent">Repeat.</span>
+        </h1>
+        <div className="hero-bottom">
+          <p className="hero-tagline">
+            A 1,200-strong crew running the streets of Bengaluru — sunrise to sundown, easy miles to threshold pain. No gatekeepers. No bad pace. Just the clock and the curb.
+          </p>
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="#join">Join Free <span className="arrow">→</span></a>
+            <a className="btn btn-ghost" href="#schedule">This Week's Runs</a>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function Ticker() {
+  const items = ["Tuesday Threshold", "★", "Saturday Long Run", "★", "All Paces Welcome", "★", "Free Forever", "★", "Cubbon · Lalbagh · Sankey · Hebbal", "★", "Sub-3 Pack", "★", "First-Timer Pack", "★", "Show Up. Run. Repeat.", "★"];
+  const content = items.concat(items);
+  return (
+    <div className="ticker">
+      <div className="ticker-track">
+        <span>{content.map((x, i) => (
+          <span key={i} className={x === "★" ? "star" : ""}>{x}</span>
+        ))}</span>
+      </div>
+    </div>
+  );
+}
+
+function Stats() {
+  return (
+    <section style={{ padding: "0" }}>
+      <div className="wrap">
+        <div className="stats">
+          <div className="stat">
+            <div className="stat-num">1,247<span className="unit">members</span></div>
+            <div className="stat-label">Active Crew · Apr '26</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">38<span className="unit">K/wk</span></div>
+            <div className="stat-label">Avg. Crew Mileage</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">14<span className="unit">runs</span></div>
+            <div className="stat-label">Per Week · 7 Days</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">07<span className="unit">years</span></div>
+            <div className="stat-label">On The Road · Est. 2019</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Schedule() {
+  const [day, setDay] = useState("TUE");
+  const runs = SCHEDULE[day];
+  return (
+    <section className="schedule" id="schedule">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="section-num">02 / Schedule</span>
+          <h2 className="section-title">This Week<br/><span className="green">/ Show Up.</span></h2>
+          <p className="section-meta">14 runs · 7 days · all paces welcome · always free · BYO water</p>
+        </div>
+        <div className="day-tabs" role="tablist">
+          {DAYS.map(d => (
+            <button key={d.key} className={`day-tab${day === d.key ? " active" : ""}`} onClick={() => setDay(d.key)} role="tab" aria-selected={day === d.key}>
+              <span className="num">{d.num}</span>
+              <span>{d.key}</span>
+            </button>
+          ))}
+        </div>
+        <div style={{ marginTop: 40 }}>
+          {runs === "REST" ? (
+            <div className="rest-day">
+              <h3>Rest Day.<br/>Eat A Dosa.</h3>
+              <p>No scheduled runs · MTR Lalbagh recommended</p>
+            </div>
+          ) : (
+            runs.map((r, i) => (
+              <div className="run-card" key={i}>
+                <div className="run-time">{r.time}<span className="ampm">{r.ampm}</span></div>
+                <div className="run-info">
+                  <h4>{r.title}</h4>
+                  <p>{r.loc}</p>
+                </div>
+                <div className="run-spec"><strong>{r.dist}</strong>distance</div>
+                <div className="run-spec"><strong>{r.pace}</strong>min/km pace</div>
+                <div><span className={`run-tag ${r.tag.type}`}>{r.tag.label}</span></div>
+                <div className="run-arrow">→</div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RouteMap({ route }) {
+  return (
+    <div className="route-map">
+      <svg viewBox="0 0 720 320" preserveAspectRatio="none">
+        <path d={route.path} fill="none" stroke="#7dff5a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+        <path d={route.path} fill="none" stroke="#7dff5a" strokeWidth="10" strokeLinecap="round" opacity="0.15" />
+      </svg>
+      {route.pins.map((p, i) => (
+        <div key={i} className={`route-pin${p.end ? " end" : ""}`} style={{ left: `${p.x}%`, top: `${p.y}%` }} />
+      ))}
+    </div>
+  );
+}
+
+function Routes() {
+  const [featured, ...rest] = ROUTES;
+  return (
+    <section id="routes">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="section-num">03 / Routes</span>
+          <h2 className="section-title">Where<br/>We <span className="green">Run.</span></h2>
+          <p className="section-meta">Curated loops across Bengaluru · GPX files in member portal</p>
+        </div>
+        <div className="routes-grid">
+          <div className="route-card featured">
+            <RouteMap route={featured} />
+            <div className="route-info">
+              <div>
+                <h4>{featured.name}</h4>
+                <p>{featured.type}</p>
+              </div>
+              <div className="route-stats">
+                <span><strong>{featured.dist}</strong>distance</span>
+                <span><strong>{featured.elev}</strong>elevation</span>
+                <span><strong>{featured.surface}</strong>surface</span>
+              </div>
+            </div>
+          </div>
+          <div className="route-side">
+            {rest.map((r, i) => (
+              <div className="route-card" key={i}>
+                <RouteMap route={r} />
+                <div className="route-info">
+                  <div>
+                    <h4>{r.name}</h4>
+                    <p>{r.type}</p>
+                  </div>
+                  <div className="route-stats">
+                    <span><strong>{r.dist}</strong>dist</span>
+                    <span><strong>{r.elev}</strong>elev</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Races() {
+  return (
+    <section id="races">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="section-num">04 / Races</span>
+          <h2 className="section-title">Pin On<br/>A <span className="green">Bib.</span></h2>
+          <p className="section-meta">Crew blocks at every major race · group bus + pre-race pasta included</p>
+        </div>
+        <div className="races-list">
+          {RACES.map((r, i) => (
+            <div className="race-row" key={i}>
+              <div className="race-date">
+                <span className="day">{r.day}</span>
+                <span className="month">{r.month} '26</span>
+              </div>
+              <div className="race-info">
+                <h4>{r.title}</h4>
+                <p>{r.loc}</p>
+              </div>
+              <div className="race-distance"><strong>{r.dist}</strong>distance</div>
+              <div><span className={`race-status ${r.status}`}>{r.statusLabel}</span></div>
+              <div className="run-arrow">→</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Testimonials() {
+  return (
+    <section className="testimonials" id="crew">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="section-num">05 / The Crew</span>
+          <h2 className="section-title">Why We<br/><span className="green">Keep Showing Up.</span></h2>
+          <p className="section-meta">Word from members · 1,247 strong and counting</p>
+        </div>
+        <div className="tcards">
+          {TESTIMONIALS.map((t, i) => (
+            <div className="tcard" key={i}>
+              <div className="quote-mark">"</div>
+              <blockquote>{t.quote}</blockquote>
+              <div className="tperson">
+                <div className="tavatar">{t.init}</div>
+                <div>
+                  <div className="name">{t.name}</div>
+                  <div className="meta">{t.meta}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Gallery() {
+  return (
+    <section id="gallery">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="section-num">06 / Field Notes</span>
+          <h2 className="section-title">Postcards<br/>From The <span className="green">Pavement.</span></h2>
+          <p className="section-meta">Recent crew runs · tag #runtogetherblr</p>
+        </div>
+        <div className="gallery">
+          {GALLERY.map((g, i) => (
+            <div
+              className="gphoto"
+              key={i}
+              style={{
+                background: `linear-gradient(${135 + i * 23}deg, hsl(${g.hue}) 0%, hsl(${g.hue.replace(/\d+%$/, "15%")}) 100%)`,
+              }}
+            >
+              <div className="gphoto-label">{g.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Join() {
+  return (
+    <section className="join" id="join">
+      <div className="join-bg"></div>
+      <div className="join-eyebrow">— Membership · Free Forever —</div>
+      <h2 className="join-title">
+        Lace Up.<br/>
+        <span className="stroke">Join The Crew.</span>
+      </h2>
+      <p className="join-sub">
+        No fees. No tryouts. No "you have to run sub-X to come." Just show up to any run, find a person in a Run Together cap, and you're in. Or sign up below and we'll send you the WhatsApp link.
+      </p>
+      <div className="join-actions">
+        <a className="btn btn-primary" href="#">Get The WhatsApp Link <span className="arrow">→</span></a>
+        <a className="btn btn-ghost" href="#schedule">See This Week's Runs</a>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="foot">
+      <div className="wrap">
+        <div className="foot-grid">
+          <div>
+            <div className="foot-brand">Run<br/><span className="green">Together.</span></div>
+            <p style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--cream-dim)", marginTop: 18 }}>
+              BENGALURU · EST. 2019<br/>14 RUNS / WEEK · ALWAYS FREE
+            </p>
+          </div>
+          <div className="foot-col">
+            <h5>Run</h5>
+            <ul>
+              <li><a href="#schedule">Schedule</a></li>
+              <li><a href="#routes">Routes</a></li>
+              <li><a href="#races">Races</a></li>
+            </ul>
+          </div>
+          <div className="foot-col">
+            <h5>Crew</h5>
+            <ul>
+              <li><a href="#join">Join</a></li>
+              <li><a href="#crew">Members</a></li>
+              <li><a href="#gallery">Gallery</a></li>
+            </ul>
+          </div>
+          <div className="foot-col">
+            <h5>Find Us</h5>
+            <ul>
+              <li><a href="#">Strava</a></li>
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">WhatsApp</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="foot-bottom">
+          <span>© 2026 Run Together Bengaluru</span>
+          <span>Run Soft. Run Often.</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Nav />
+      <Hero />
+      <Ticker />
+      <Stats />
+      <Schedule />
+      <Routes />
+      <Races />
+      <Testimonials />
+      <Gallery />
+      <Join />
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
